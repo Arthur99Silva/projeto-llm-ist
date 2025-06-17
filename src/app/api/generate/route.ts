@@ -1,4 +1,4 @@
-// cole isso em src/app/api/generate/route.ts
+// src/app/api/generate/route.ts (versão de depuração CORRIGIDA)
 import { google } from '@ai-sdk/google';
 import { streamText, CoreMessage } from 'ai';
 import { prompts, PersonaKey } from '@/lib/prompts';
@@ -8,6 +8,8 @@ export const runtime = 'edge';
 export async function POST(req: Request) {
   try {
     const { messages, persona }: { messages: CoreMessage[]; persona: PersonaKey } = await req.json();
+    console.log('API RECEBEU:', { persona });
+
     const systemPrompt = prompts[persona] || prompts.professora_amanda;
 
     const result = await streamText({
@@ -17,7 +19,19 @@ export async function POST(req: Request) {
       temperature: 0.7,
     });
 
-    return result.toDataStreamResponse();
+    // --- INÍCIO DO CÓDIGO DE DEPURAÇÃO CORRIGIDO ---
+    // Usando 'result.response' como sugerido pelo erro.
+    const response = await result.response;
+    console.log('--- RESPOSTA COMPLETA DA API DO GEMINI ---');
+    console.log(JSON.stringify(response, null, 2));
+    console.log('-----------------------------------------');
+
+    return new Response(JSON.stringify(response), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+    // --- FIM DO CÓDIGO DE DEPURAÇÃO ---
+
   } catch (error) {
     console.error('[API_ERROR]', error);
     if (error instanceof Error) {

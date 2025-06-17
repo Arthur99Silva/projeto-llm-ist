@@ -1,4 +1,4 @@
-// src/app/api/generate/route.ts
+// cole isso em src/app/api/generate/route.ts
 import { google } from '@ai-sdk/google';
 import { streamText, CoreMessage } from 'ai';
 import { prompts, PersonaKey } from '@/lib/prompts';

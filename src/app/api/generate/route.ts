@@ -1,6 +1,7 @@
-// src/app/api/generate/route.ts (versão de depuração CORRIGIDA)
+// src/app/api/generate/route.ts
+
 import { google } from '@ai-sdk/google';
-import { streamText, CoreMessage } from 'ai';
+import { streamText, CoreMessage } from 'ai'; // Remova a importação de StreamingTextResponse
 import { prompts, PersonaKey } from '@/lib/prompts';
 
 export const runtime = 'edge';
@@ -8,7 +9,6 @@ export const runtime = 'edge';
 export async function POST(req: Request) {
   try {
     const { messages, persona }: { messages: CoreMessage[]; persona: PersonaKey } = await req.json();
-    console.log('API RECEBEU:', { persona });
 
     const systemPrompt = prompts[persona] || prompts.professora_amanda;
 
@@ -16,27 +16,21 @@ export async function POST(req: Request) {
       model: google('gemini-1.5-flash'),
       system: systemPrompt,
       messages: messages,
-      temperature: 0.7,
     });
 
-    // --- INÍCIO DO CÓDIGO DE DEPURAÇÃO CORRIGIDO ---
-    // Usando 'result.response' como sugerido pelo erro.
-    const response = await result.response;
-    console.log('--- RESPOSTA COMPLETA DA API DO GEMINI ---');
-    console.log(JSON.stringify(response, null, 2));
-    console.log('-----------------------------------------');
-
-    return new Response(JSON.stringify(response), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
-    // --- FIM DO CÓDIGO DE DEPURAÇÃO ---
+    // CORREÇÃO FINAL:
+    // Utilize o método toDataStreamResponse() sugerido pelo erro.
+    // Ele já está disponível no objeto 'result' e faz todo o trabalho.
+    return result.toDataStreamResponse();
 
   } catch (error) {
-    console.error('[API_ERROR]', error);
-    if (error instanceof Error) {
-      return new Response(error.message, { status: 500 });
-    }
-    return new Response('Ocorreu um erro interno na API.', { status: 500 });
+    console.error('[API-GENERATE-ERROR]', error);
+    const errorMessage = error instanceof Error ? error.message : 'Ocorreu um erro desconhecido';
+    
+    // Retornando o erro em formato JSON
+    return new Response(JSON.stringify({ error: errorMessage }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }

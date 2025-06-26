@@ -27,6 +27,15 @@ const personaBubbleStyles: Record<PersonaKey, string> = {
   influencer_lola: 'bg-[#AE82D9] text-white',
 };
 
+// ===== INÍCIO DA NOVA ALTERAÇÃO =====
+// Textos de introdução para cada persona
+const personaIntroductions: Record<PersonaKey, string> = {
+  professora_amanda: 'Olá! Sou a Professora Amanda. Estou aqui para te ajudar a entender mais sobre saúde sexual de forma clara e sem julgamentos. Pode perguntar!',
+  mano_consciente: 'E aí, parça? Firmeza? Sou o Mano Consciente. Tô aqui pra te dar um papo reto e te ajudar a se cuidar, na moral. Tamo junto!',
+  influencer_lola: 'Oii, amiga! Aqui é a Lola! Vamos conversar sobre bem-estar e autoestima? Meu foco é te deixar 100% empoderada e segura. Vem comigo!',
+};
+// ===== FIM DA NOVA ALTERAÇÃO =====
+
 export default function Chat() {
   const [persona, setPersona] = useState<PersonaKey>('professora_amanda');
 
@@ -57,7 +66,7 @@ export default function Chat() {
               personaButtonStyles[key]
             } ${
               persona === key
-                ? 'ring-2 ring-offset-2 ring-[#81D8D0] ring-offset-gray-800' // Cor do anel alterada
+                ? 'ring-2 ring-offset-2 ring-[#81D8D0] ring-offset-gray-800'
                 : 'ring-0'
             }`}
           >
@@ -70,6 +79,15 @@ export default function Chat() {
       <div className="flex flex-col flex-grow bg-[#25242b] rounded-b-lg shadow-inner">
         {/* Área de Mensagens */}
         <div className="flex-grow overflow-y-auto p-4 space-y-4">
+          {/* Mostra a introdução apenas se não houver mensagens */}
+          {messages.length === 0 && (
+            <div className="text-center p-6">
+              <p className="text-sm italic text-gray-300">
+                {personaIntroductions[persona]}
+              </p>
+            </div>
+          )}
+
           {messages.map((m) => (
             <div
               key={m.id}
@@ -78,7 +96,7 @@ export default function Chat() {
               <div
                 className={`max-w-xs md:max-w-md p-3 rounded-lg whitespace-pre-wrap ${
                   m.role === 'user'
-                    ? 'bg-[#81D8D0] text-black' // Cor do balão do usuário e texto alterados
+                    ? 'bg-[#81D8D0] text-black'
                     : personaBubbleStyles[persona]
                 }`}
               >
@@ -100,7 +118,7 @@ export default function Chat() {
             />
             <button
               type="submit"
-              className="px-4 py-2 bg-[#81D8D0] text-black font-semibold rounded-r-md hover:bg-[#81D8D0]/90 disabled:opacity-50" // Cor do botão de envio e texto alterados
+              className="px-4 py-2 bg-[#81D8D0] text-black font-semibold rounded-r-md hover:bg-[#81D8D0]/90 disabled:opacity-50"
             >
               Enviar
             </button>

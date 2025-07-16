@@ -1,40 +1,32 @@
-// src/app/page.tsx
-
 'use client';
 
 import { useState } from 'react';
 import { useChat } from 'ai/react';
 import type { PersonaKey } from '../../lib/prompts';
 
-// Mapeamento dos nomes das personas para exibição
 const personaNames: Record<PersonaKey, string> = {
   professora_amanda: 'Professora Amanda',
   mano_consciente: 'Mano Consciente',
   influencer_lola: 'Influencer Lola',
 };
 
-// Mapeamento das cores para os BOTÕES
 const personaButtonStyles: Record<PersonaKey, string> = {
   professora_amanda: 'bg-[#D99E82] hover:bg-[#D99E82]/90',
   mano_consciente: 'bg-[#D7D982] hover:bg-[#D7D982]/90',
   influencer_lola: 'bg-[#AE82D9] hover:bg-[#AE82D9]/90',
 };
 
-// Mapeamento das cores para os BALÕES DE CHAT da persona
 const personaBubbleStyles: Record<PersonaKey, string> = {
   professora_amanda: 'bg-[#D99E82] text-white',
   mano_consciente: 'bg-[#D7D982] text-black',
   influencer_lola: 'bg-[#AE82D9] text-white',
 };
 
-// ===== INÍCIO DA NOVA ALTERAÇÃO =====
-// Textos de introdução para cada persona
 const personaIntroductions: Record<PersonaKey, string> = {
   professora_amanda: 'Olá! Sou a Professora Amanda. Estou aqui para te ajudar a entender mais sobre saúde sexual de forma clara e sem julgamentos. Pode perguntar!',
   mano_consciente: 'E aí, parça? Firmeza? Sou o Mano Consciente. Tô aqui pra te dar um papo reto e te ajudar a se cuidar, na moral. Tamo junto!',
   influencer_lola: 'Oii, amiga! Aqui é a Lola! Vamos conversar sobre bem-estar e autoestima? Meu foco é te deixar 100% empoderada e segura. Vem comigo!',
 };
-// ===== FIM DA NOVA ALTERAÇÃO =====
 
 export default function Chat() {
   const [persona, setPersona] = useState<PersonaKey>('professora_amanda');
@@ -75,7 +67,6 @@ export default function Chat() {
         ))}
       </div>
 
-      {/* Wrapper para a área do chat com fundo mais escuro */}
       <div className="flex flex-col flex-grow bg-[#25242b] rounded-b-lg shadow-inner">
         {/* Área de Mensagens */}
         <div className="flex-grow overflow-y-auto p-4 space-y-4">

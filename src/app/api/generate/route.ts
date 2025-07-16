@@ -1,7 +1,5 @@
-// src/app/api/generate/route.ts
-
 import { google } from '@ai-sdk/google';
-import { streamText, CoreMessage } from 'ai'; // Remova a importação de StreamingTextResponse
+import { streamText, CoreMessage } from 'ai';
 import { prompts, PersonaKey } from '@/lib/prompts';
 
 export const runtime = 'edge';
@@ -18,9 +16,6 @@ export async function POST(req: Request) {
       messages: messages,
     });
 
-    // CORREÇÃO FINAL:
-    // Utilize o método toDataStreamResponse() sugerido pelo erro.
-    // Ele já está disponível no objeto 'result' e faz todo o trabalho.
     return result.toDataStreamResponse();
 
   } catch (error) {

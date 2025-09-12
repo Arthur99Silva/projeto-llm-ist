@@ -1,3 +1,5 @@
+// src/app/page.tsx
+
 'use client';
 
 import { useState } from 'react';
@@ -67,7 +69,9 @@ export default function Chat() {
         ))}
       </div>
 
-      <div className="flex flex-col flex-grow bg-[#25242b] rounded-b-lg shadow-inner">
+      {/* ===== LINHA MODIFICADA ===== */}
+      {/* Adicionada a classe "overflow-hidden" para corrigir o problema de rolagem */}
+      <div className="flex flex-col flex-grow bg-[#25242b] rounded-b-lg shadow-inner overflow-hidden">
         {/* Área de Mensagens */}
         <div className="flex-grow overflow-y-auto p-4 space-y-4">
           {/* Mostra a introdução apenas se não houver mensagens */}

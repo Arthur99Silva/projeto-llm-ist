@@ -25,9 +25,9 @@ const personaBubbleStyles: Record<PersonaKey, string> = {
 };
 
 const personaIntroductions: Record<PersonaKey, string> = {
-  professora_amanda: 'Olá! Sou a Professora Amanda. Estou aqui para te ajudar a entender mais sobre saúde sexual de forma clara e sem julgamentos. Pode perguntar!',
-  mano_consciente: 'E aí, parça? Firmeza? Sou o Mano Consciente. Tô aqui pra te dar um papo reto e te ajudar a se cuidar, na moral. Tamo junto!',
-  influencer_lola: 'Oii, amiga! Aqui é a Lola! Vamos conversar sobre bem-estar e autoestima? Meu foco é te deixar 100% empoderada e segura. Vem comigo!',
+  professora_amanda: 'Olá! Sou a Professora Amanda. Estou aqui para te ajudar a entender mais sobre saúde sexual de forma clara e sem julgamentos. Suas conversas são 100% anônimas. Pode perguntar!',
+  mano_consciente: 'E aí amigo? Beleza? Sou o Mano Consciente. Tô aqui pra te dar um papo reto e te ajudar a se cuidar melhor. Suas conversas são 100% anônimas. Manda ver nas perguntas!',
+  influencer_lola: 'Oii, amiga! Aqui é a Lola! Vamos conversar sobre bem-estar e autoestima? Meu foco é te deixar 100% empoderada e segura. Suas conversas são 100% anônimas. Vem comigo!',
 };
 
 export default function Chat() {

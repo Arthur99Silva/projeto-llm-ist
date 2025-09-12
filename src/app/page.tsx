@@ -69,9 +69,14 @@ export default function Chat() {
         ))}
       </div>
 
-      {/* ===== LINHA MODIFICADA ===== */}
-      {/* Adicionada a classe "overflow-hidden" para corrigir o problema de rolagem */}
+      {/* Container principal do chat com o disclaimer */}
       <div className="flex flex-col flex-grow bg-[#25242b] rounded-b-lg shadow-inner overflow-hidden">
+        
+        {/* ===== AVISO (DISCLAIMER) ADICIONADO AQUI ===== */}
+        <div className="p-2 text-center text-xs text-gray-300 bg-black/20 border-b border-gray-600">
+          <p>Esta ferramenta é informativa e não substitui uma consulta médica. Procure um profissional de saúde.</p>
+        </div>
+
         {/* Área de Mensagens */}
         <div className="flex-grow overflow-y-auto p-4 space-y-4">
           {/* Mostra a introdução apenas se não houver mensagens */}

@@ -2,16 +2,17 @@ import { google } from '@ai-sdk/google';
 import { streamText, CoreMessage } from 'ai';
 import { prompts, PersonaKey } from '@/lib/prompts';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs'; 
 
 export async function POST(req: Request) {
   try {
     const { messages, persona }: { messages: CoreMessage[]; persona: PersonaKey } = await req.json();
 
+    // Fallback de segurança
     const systemPrompt = prompts[persona] || prompts.professora_amanda;
 
     const result = await streamText({
-      model: google('gemini-1.5-flash'),
+      model: google('gemini-2.5-flash'), 
       system: systemPrompt,
       messages: messages,
     });
@@ -19,11 +20,8 @@ export async function POST(req: Request) {
     return result.toDataStreamResponse();
 
   } catch (error) {
-    console.error('[API-GENERATE-ERROR]', error);
-    const errorMessage = error instanceof Error ? error.message : 'Ocorreu um erro desconhecido';
-    
-    // Retornando o erro em formato JSON
-    return new Response(JSON.stringify({ error: errorMessage }), {
+    console.error('[API ERROR]:', error);
+    return new Response(JSON.stringify({ error: 'Erro ao processar resposta da IA' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });

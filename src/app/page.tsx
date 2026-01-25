@@ -1,10 +1,8 @@
-// src/app/page.tsx
-
 'use client';
 
 import { useState } from 'react';
 import { useChat } from 'ai/react';
-import type { PersonaKey } from '../../lib/prompts';
+import type { PersonaKey } from '@/lib/prompts';
 
 const personaNames: Record<PersonaKey, string> = {
   professora_amanda: 'Professora Amanda',
@@ -25,9 +23,9 @@ const personaBubbleStyles: Record<PersonaKey, string> = {
 };
 
 const personaIntroductions: Record<PersonaKey, string> = {
-  professora_amanda: 'Olá! Sou a Professora Amanda. Estou aqui para te ajudar a entender mais sobre saúde sexual de forma clara e sem julgamentos. Suas conversas são 100% anônimas. Pode perguntar!',
-  mano_consciente: 'E aí amigo? Beleza? Sou o Mano Consciente. Tô aqui pra te dar um papo reto e te ajudar a se cuidar melhor. Suas conversas são 100% anônimas. Manda ver nas perguntas!',
-  influencer_lola: 'Oii, amiga! Aqui é a Lola! Vamos conversar sobre bem-estar e autoestima? Meu foco é te deixar 100% empoderada e segura. Suas conversas são 100% anônimas. Vem comigo!',
+  professora_amanda: 'Olá! Sou a Professora Amanda. Estou aqui para te ajudar a entender mais sobre saúde sexual de forma clara e sem julgamentos. Suas conversas são 100% anônimas.',
+  mano_consciente: 'E aí amigo? Beleza? Sou o Mano Consciente. Tô aqui pra te dar um papo reto e te ajudar a se cuidar melhor. Manda ver nas perguntas!',
+  influencer_lola: 'Oii, amiga! Aqui é a Lola! Vamos conversar sobre bem-estar e autoestima? Meu foco é te deixar 100% empoderada e segura. Vem comigo!',
 };
 
 export default function Chat() {
@@ -35,17 +33,16 @@ export default function Chat() {
 
   const { messages, input, handleInputChange, handleSubmit, setMessages } = useChat({
     api: '/api/generate',
-    body: {
-      persona,
-    },
-    onFinish() {
-      console.log('Resposta completa recebida.');
-    },
+    body: { persona },
+    onError: (err) => {
+      console.error("Erro no chat:", err);
+      alert("Ocorreu um erro ao conectar com o chat. Verifique o console.");
+    }
   });
 
   const handlePersonaChange = (newPersona: PersonaKey) => {
     setPersona(newPersona);
-    setMessages([]);
+    setMessages([]); // Limpa o chat ao trocar de personagem
   };
 
   return (
@@ -69,20 +66,17 @@ export default function Chat() {
         ))}
       </div>
 
-      {/* Container principal do chat com o disclaimer */}
       <div className="flex flex-col flex-grow bg-[#25242b] rounded-b-lg shadow-inner overflow-hidden">
-        
-        {/* ===== AVISO (DISCLAIMER) ADICIONADO AQUI ===== */}
+        {/* Aviso Legal */}
         <div className="p-2 text-center text-xs text-gray-300 bg-black/20 border-b border-gray-600">
           <p>Esta ferramenta é informativa e não substitui uma consulta médica. Procure um profissional de saúde.</p>
         </div>
 
         {/* Área de Mensagens */}
         <div className="flex-grow overflow-y-auto p-4 space-y-4">
-          {/* Mostra a introdução apenas se não houver mensagens */}
           {messages.length === 0 && (
-            <div className="text-center p-6">
-              <p className="text-sm italic text-gray-300">
+            <div className="text-center p-6 mt-10">
+              <p className="text-sm italic text-gray-300 max-w-xs mx-auto">
                 {personaIntroductions[persona]}
               </p>
             </div>
@@ -94,7 +88,7 @@ export default function Chat() {
               className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-xs md:max-w-md p-3 rounded-lg whitespace-pre-wrap ${
+                className={`max-w-[85%] md:max-w-md p-3 rounded-lg whitespace-pre-wrap ${
                   m.role === 'user'
                     ? 'bg-[#81D8D0] text-black'
                     : personaBubbleStyles[persona]
@@ -107,18 +101,19 @@ export default function Chat() {
           ))}
         </div>
 
-        {/* Formulário de Envio */}
+        {/* Formulário */}
         <form onSubmit={handleSubmit} className="p-4 border-t border-gray-600">
           <div className="flex rounded-lg shadow-sm">
             <input
-              className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-l-md focus:ring-[#81D8D0] focus:border-[#81D8D0] bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200"
+              className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-l-md focus:ring-[#81D8D0] focus:border-[#81D8D0] bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200 outline-none transition-all"
               value={input}
               placeholder={`Converse com ${personaNames[persona]}...`}
               onChange={handleInputChange}
             />
             <button
               type="submit"
-              className="px-4 py-2 bg-[#81D8D0] text-black font-semibold rounded-r-md hover:bg-[#81D8D0]/90 disabled:opacity-50"
+              disabled={!input.trim()}
+              className="px-6 py-2 bg-[#81D8D0] text-black font-bold rounded-r-md hover:bg-[#81D8D0]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Enviar
             </button>

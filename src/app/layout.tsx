@@ -1,7 +1,6 @@
 // src/app/layout.tsx
 
 import type { Metadata } from "next";
-// Importa as fontes do pacote 'geist' que acabamos de instalar
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
@@ -18,11 +17,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br">
-      {/*
-        A forma de aplicar as fontes muda um pouco.
-        Usamos as variáveis CSS que o próprio pacote 'geist' fornece.
-      */}
+    <html lang="pt-BR">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body className={`${GeistSans.variable} ${GeistMono.variable} antialiased`}>
         <Navbar />
         <main>{children}</main>
